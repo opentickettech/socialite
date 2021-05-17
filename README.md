@@ -28,7 +28,7 @@ Add the event to your `listen[]` array in `app/Providers/EventServiceProvider`. 
 protected $listen = [
     \SocialiteProviders\Manager\SocialiteWasCalled::class => [
         // ... other providers
-        'Opentickettech\\SOcialite\\OpentickettechExtendSocialite@handle',
+        'Opentickettech\\Socialite\\OpentickettechExtendSocialite@handle',
     ],
 ];
 ```
@@ -38,5 +38,5 @@ protected $listen = [
 You should now be able to use the provider like you would regularly use Socialite (assuming you have the facade installed):
 
 ```php
-return Socialite::driver('github')->redirect();
+return Socialite::driver('opentickettech')->redirect();
 ```
