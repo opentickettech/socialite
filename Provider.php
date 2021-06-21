@@ -19,11 +19,15 @@ class Provider extends AbstractProvider
     }
 
     protected function getAuthUrl ($state) {
-        return $this->buildAuthUrlFromBase("https://auth.openticket.tech/token/authorize", $state);
+        $baseUrl = config("services.opentickettech.uri", "https://auth.openticket.tech");
+
+        return $this->buildAuthUrlFromBase(rtrim($baseUrl, "/") . "/token/authorize", $state);
     }
 
     protected function getTokenUrl () {
-        return "https://auth.openticket.tech/token";
+        $baseUrl = config("services.opentickettech.uri", "https://auth.openticket.tech");
+
+        return rtrim($baseUrl, "/") . "/token";
     }
 
     public function userFromToken($token) {
@@ -31,7 +35,9 @@ class Provider extends AbstractProvider
     }
 
     protected function getUserByToken ($token) {
-        $userUrl = "https://auth.openticket.tech/user/me";
+        $baseUrl = config("services.opentickettech.uri", "https://auth.openticket.tech");
+
+        $userUrl = rtrim($baseUrl, "/") . "/user/me";
 
         $response = $this->getHttpClient()->get(
             $userUrl, $this->getRequestOptions($token)
