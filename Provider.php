@@ -11,7 +11,7 @@ class Provider extends AbstractProvider implements ProviderInterface {
 
     const IDENTIFIER = "OPENTICKETTECH";
 
-    public function getAccessTokenRefreshResponse($refreshToken) {
+    public function getAccessTokenRefreshResponse ($refreshToken) {
         $response = $this->getHttpClient()->post($this->getTokenUrl(), [
             "headers"     => ["Accept" => "application/json"],
             "form_params" => $this->getTokenRefreshFields($refreshToken),
@@ -20,7 +20,7 @@ class Provider extends AbstractProvider implements ProviderInterface {
         return json_decode($response->getBody(), true);
     }
 
-    protected function getAuthUrl($state) {
+    protected function getAuthUrl ($state) {
         return $this->buildAuthUrlFromBase("https://auth.openticket.tech/token/authorize", $state);
     }
 
@@ -28,7 +28,7 @@ class Provider extends AbstractProvider implements ProviderInterface {
         return "https://auth.openticket.tech/token";
     }
 
-    public function userFromToken($token) {
+    public function userFromToken ($token) {
         return $this->getUserByToken($token);
     }
 
@@ -45,7 +45,7 @@ class Provider extends AbstractProvider implements ProviderInterface {
         return $user;
     }
 
-    protected function mapUserToObject(array $user) {
+    protected function mapUserToObject (array $user) {
         return (new User())->setRaw($user)->map([
             'id'       => Arr::get($user, 'guid'),
             'nickname' => Arr::get($user, 'email'),
@@ -54,13 +54,13 @@ class Provider extends AbstractProvider implements ProviderInterface {
         ]);
     }
 
-    protected function getTokenFields($code) {
+    protected function getTokenFields ($code) {
         return array_merge(parent::getTokenFields($code), [
             "grant_type" => "authorization_code",
         ]);
     }
 
-    protected function getTokenRefreshFields($refreshToken) {
+    protected function getTokenRefreshFields ($refreshToken) {
         return [
             "client_id"     => $this->clientId,
             "client_secret" => $this->clientSecret,
@@ -75,7 +75,7 @@ class Provider extends AbstractProvider implements ProviderInterface {
      * @param string $token
      * @return array
      */
-    protected function getRequestOptions($token) {
+    protected function getRequestOptions ($token) {
         return [
             'headers' => [
                 'Accept'        => 'application/json',
