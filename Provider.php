@@ -4,9 +4,11 @@ namespace Opentickettech\Socialite;
 
 use SocialiteProviders\Manager\OAuth2\AbstractProvider;
 use SocialiteProviders\Manager\OAuth2\User;
+use SocialiteProviders\Manager\Contracts\OAuth2\ProviderInterface;
+use Illuminate\Support\Arr;
 
-class Provider extends AbstractProvider
-{
+class Provider extends AbstractProvider implements ProviderInterface {
+
     const IDENTIFIER = "OPENTICKETTECH";
 
     public function getAccessTokenRefreshResponse ($refreshToken) {
@@ -30,7 +32,7 @@ class Provider extends AbstractProvider
         return rtrim($baseUrl, "/") . "/token";
     }
 
-    public function userFromToken($token) {
+    public function userFromToken ($token) {
         return $this->getUserByToken($token);
     }
 
@@ -40,7 +42,8 @@ class Provider extends AbstractProvider
         $userUrl = rtrim($baseUrl, "/") . "/user/me";
 
         $response = $this->getHttpClient()->get(
-            $userUrl, $this->getRequestOptions($token)
+            $userUrl,
+            $this->getRequestOptions($token)
         );
 
         $user = json_decode($response->getBody(), true);
@@ -49,8 +52,12 @@ class Provider extends AbstractProvider
     }
 
     protected function mapUserToObject (array $user) {
-        // TODO - Implement
-        throw new \BadMethodCallException("This function has not been implemented yet");
+        return (new User())->setRaw($user)->map([
+            'id'       => Arr::get($user, 'guid'),
+            'nickname' => Arr::get($user, 'email'),
+            'name'     => Arr::get($user, 'name'),
+            'email'    => Arr::get($user, 'email'),
+        ]);
     }
 
     protected function getTokenFields ($code) {
@@ -74,12 +81,11 @@ class Provider extends AbstractProvider
      * @param string $token
      * @return array
      */
-    protected function getRequestOptions($token)
-    {
+    protected function getRequestOptions ($token) {
         return [
             'headers' => [
-                'Accept' => 'application/json',
-                'Authorization' => 'Bearer '.$token,
+                'Accept'        => 'application/json',
+                'Authorization' => 'Bearer ' . $token,
             ],
         ];
     }
