@@ -24,7 +24,7 @@ class Provider extends AbstractProvider implements ProviderInterface {
         return $this->buildAuthUrlFromBase("https://auth.openticket.tech/token/authorize", $state);
     }
 
-    protected function getTokenUrl() {
+    protected function getTokenUrl () {
         return "https://auth.openticket.tech/token";
     }
 
@@ -32,7 +32,7 @@ class Provider extends AbstractProvider implements ProviderInterface {
         return $this->getUserByToken($token);
     }
 
-    protected function getUserByToken($token) {
+    protected function getUserByToken ($token) {
         $userUrl = "https://auth.openticket.tech/user/me";
 
         $response = $this->getHttpClient()->get(
