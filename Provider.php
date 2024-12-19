@@ -23,7 +23,7 @@ class Provider extends AbstractProvider implements ProviderInterface {
     protected function getAuthUrl ($state) {
         $baseUrl = config("services.opentickettech.uri", "https://auth.openticket.tech");
 
-        return $this->buildAuthUrlFromBase(rtrim($baseUrl, "/") . "/token/authorize", $state);
+        return $this->buildAuthUrlFromBase(rtrim($baseUrl, "/") . "/tokens/authorize", $state);
     }
 
     protected function getTokenUrl () {
