@@ -29,7 +29,7 @@ class Provider extends AbstractProvider implements ProviderInterface {
     protected function getTokenUrl () {
         $baseUrl = config("services.opentickettech.uri", "https://auth.openticket.tech");
 
-        return rtrim($baseUrl, "/") . "/token";
+        return rtrim($baseUrl, "/") . "/tokens";
     }
 
     public function userFromToken ($token) {
@@ -39,7 +39,7 @@ class Provider extends AbstractProvider implements ProviderInterface {
     protected function getUserByToken ($token) {
         $baseUrl = config("services.opentickettech.uri", "https://auth.openticket.tech");
 
-        $userUrl = rtrim($baseUrl, "/") . "/user/me";
+        $userUrl = rtrim($baseUrl, "/") . "/users/me";
 
         $response = $this->getHttpClient()->get(
             $userUrl,
